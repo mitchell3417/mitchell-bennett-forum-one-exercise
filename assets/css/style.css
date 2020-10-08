@@ -1,0 +1,23 @@
+.mb-college-scores h2 {
+	text-align: center;
+}
+
+.mb-college-scores table {
+	width: 100%;
+}
+.mb-college-scores table tr th {
+	background: #3e3e3e;
+	color: #eee;
+	font-weight: normal;
+}
+
+.mb-college-scores table tr:nth-child(even) {
+	background: #eee;
+}
+.mb-college-scores table tr:nth-child(odd) {
+	background: #dadada;
+}
+
+.mb-college-scores .winner {
+	font-weight: bold;
+}
