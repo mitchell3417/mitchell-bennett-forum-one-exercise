@@ -93,7 +93,7 @@ class CollegeScores {
 
 		// Define the shortcode attributes and defaults
 		$atts = shortcode_atts( array(
-			'school'	=> 'Missouri'
+			'school'	=> 'Missouri',
 		), $atts );
 
 		// Create a variable to store the scores
@@ -148,14 +148,30 @@ class CollegeScores {
 		}
 		usort($final_data, 'sort_by_date');
 
+		// Calculate record
+		$wins = 0;
+		$losses = 0;
+		foreach ( $final_data as $game ) {
+			if ( $game->home_points > $game->away_points && $game->home_team === $atts['school'] ) {
+				$wins++;
+			}
+			elseif ( $game->home_points < $game->away_points && $game->away_team === $atts['school'] ) {
+				$wins++;
+			}
+			else {
+				$losses++;
+			}
+		}
+
 		// Save the html to a variable so we can return it
 		$display = '';
 		$display .= '<div class="mb-college-scores">';
-			$display .= '<h2>' . $atts['school'] . '\'s last 4 games</h2>';
 			$display .= '<table>';
+				$display .= '<thead><tr><td colspan="5">' . $atts['school'] . ' (' . $wins . '-' . $losses .')' . '</td></tr></thead>';
+				$display .= '<tfoot><tr><td colspan="5">*bold indicates winner</td></tr></tfoot>';
 				$display .= '<tr>';
 					$display .= '<th>Date</th>';
-					$display .= '<th>Guests</th>';
+					$display .= '<th>Away</th>';
 					$display .= '<th>Score</th>';
 					$display .= '<th>Home</th>';
 					$display .= '<th>Score</th>';

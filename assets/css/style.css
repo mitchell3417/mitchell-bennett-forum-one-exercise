@@ -1,23 +1,41 @@
-.mb-college-scores h2 {
-	text-align: center;
-}
-
 .mb-college-scores table {
 	width: 100%;
+	border: 0px;
 }
+
+.mb-college-scores table td {
+	border-color: #042A2B;
+}
+
 .mb-college-scores table tr th {
-	background: #3e3e3e;
+	background: #042A2B;
 	color: #eee;
 	font-weight: normal;
 }
 
 .mb-college-scores table tr:nth-child(even) {
-	background: #eee;
+	background: #96CFDB;
 }
 .mb-college-scores table tr:nth-child(odd) {
-	background: #dadada;
+	background: #CDEDF6;
 }
 
 .mb-college-scores .winner {
 	font-weight: bold;
+}
+
+.mb-college-scores table thead tr:nth-child(n) {
+	background: transparent;
+	text-align: center;
+	font-size: 1.6em;
+}
+
+.mb-college-scores table tfoot tr:nth-child(n) {
+	background: transparent;
+	font-size: .6em;
+}
+
+.mb-college-scores table thead td,
+.mb-college-scores table tfoot td {
+	border-color: transparent;
 }
