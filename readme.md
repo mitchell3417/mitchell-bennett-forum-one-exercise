@@ -5,19 +5,19 @@ In order to use the plugin add the shortcode `[mb-college-scores school="Missour
 
 Select from the schools below:
 
--Alabama
--Arkansas
--Auburn
--Florida
--Georgia
--Kentucky
--LSU
--Mississippi State
--Missouri
--Ole Miss
--South Carolina
--Tennessee
--Texas A&M
--Vanderbilt
+- Alabama
+- Arkansas
+- Auburn
+- Florida
+- Georgia
+- Kentucky
+- LSU
+- Mississippi State
+- Missouri
+- Ole Miss
+- South Carolina
+- Tennessee
+- Texas A&M
+- Vanderbilt
 
 In the admin menu go to
