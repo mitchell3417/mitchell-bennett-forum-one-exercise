@@ -10,6 +10,7 @@ Version: 0.1
 // Get rid of intruders
 defined( 'ABSPATH' ) || exit;
 
+// Get the user defined API Endpoint
 $config = array(
 	'api_endpoint'		=> get_option( 'mb_api_endpoint' ),
 );
@@ -35,13 +36,16 @@ class CollegeScores {
 	}
 
 	function mb_admin_menu() {
+
 		add_options_page( 'College Scores', 'MB Forum One', 'manage_options', 'mb-forum-one-exercise', 'mb_forum_one_options' );
 
 		function mb_forum_one_options() {
+			// Only admins may edit these options
 			if ( !current_user_can( 'manage_options' ) )  {
 				wp_die( 'You do not have sufficient permissions to access this page.' );
 			}
-			// variables for the field and option names
+
+			// Variables for the field and option names
 		    $opt_name = 'mb_api_endpoint';
 			$hidden_field_name = 'mb_submit_hidden';
 		    $data_field_name = 'mb_api_endpoint';
@@ -52,10 +56,8 @@ class CollegeScores {
 		    // See if the user has posted us some information
 		    // If they did, this hidden field will be set to 'Y'
 		    if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' ) {
-		        // Read their posted value
+				// Save the option in the database
 		        $opt_val = $_POST[ $data_field_name ];
-
-		        // Save the posted value in the database
 		        update_option( $opt_name, $opt_val );
 
 		        // Put a "settings saved" message on the screen
@@ -65,8 +67,7 @@ class CollegeScores {
 
 		    }
 
-		    // Now display the settings editing screen
-
+		    // The content for the settings page. Mainly the form
 			echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mitchell Bennett Forum One Exercise Settings';
 			?>
@@ -90,24 +91,23 @@ class CollegeScores {
 
 	function get_college_scores( $atts, $content = "" ) {
 
-		// Define the shortcode attributes
+		// Define the shortcode attributes and defaults
 		$atts = shortcode_atts( array(
 			'school'	=> 'Missouri'
 		), $atts );
 
-
 		// Create a variable to store the scores
 		$final_data = array();
-
 
 		// Get the data from the API and check to make sure it worked
 		$year = date('Y');
 		$endpoint = esc_url_raw( $this->api_endpoint ) . '?year=' .  $year . '&team=' . $atts['school'];
 		$response = wp_safe_remote_get( $endpoint, array() );
+
+		// Error check
 		if ( is_wp_error( $response ) || empty( $response ) || $response['response']['code'] == '400' ) {
 			return false;
 		}
-
 
 		// Get the 4 most recent games played this year
 		$games = json_decode( $response['body'] );
@@ -126,7 +126,6 @@ class CollegeScores {
 		if ( count( $games ) > 4 ) {
 			$final_data = array_slice($final_data, -4, 4, true);
 		}
-
 
 		// If there's not 4 games this year, go back and get what you need from last year
 		if ( count( $games ) < 4 ) {
@@ -149,6 +148,7 @@ class CollegeScores {
 		}
 		usort($final_data, 'sort_by_date');
 
+		// Save the html to a variable so we can return it
 		$display = '';
 		$display .= '<div class="mb-college-scores">';
 			$display .= '<h2>' . $atts['school'] . '\'s last 4 games</h2>';
@@ -175,9 +175,11 @@ class CollegeScores {
 			$display .= '</table>';
 		$display .= '</div>';
 
+		// Return the completed html
 		return $display;
 	}
 
 }
 
+// Fire up the class
 new CollegeScores( $config );
